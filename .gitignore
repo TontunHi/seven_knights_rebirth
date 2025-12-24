@@ -37,11 +37,3 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Optional: Uploaded Images
-# ถ้าคุณมองว่ารูป Hero/Formation เป็น Static Content (ข้อมูลเกม) ที่ต้องมีติดเว็บ -> ไม่ต้อง Uncomment บรรทัดล่าง
-# แต่ถ้ารูปพวกนี้ถือเป็น User Generated Content (ที่ Admin อัปโหลดใหม่เรื่อยๆ ตอนรันจริง) -> ให้ลบ # ออก
-# public/images/heroes/
-# public/images/formation/
-# public/images/about_website/
-# public/images/logo_tiers/

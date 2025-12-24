@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../../partials/head') %>
+    <style>
+        body { background-color: #0f0f0f; font-family: 'Segoe UI', sans-serif; overflow-x: hidden;}
+        
+        /* --- Modern Admin Navbar --- */
+        .navbar-modern {
+            height: 64px; 
+            background: rgba(18, 18, 18, 0.95); 
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 0 20px; 
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        
+        .nav-brand-box { display: flex; align-items: center; gap: 12px; }
+        .site-logo { height: 40px; width: auto; object-fit: contain; filter: drop-shadow(0 0 5px rgba(255,193,7,0.3)); }
+        .nav-title { font-weight: 700; color: #fff; font-size: 1.1rem; letter-spacing: 0.5px; }
+        
+        .nav-btn { 
+            background: rgba(255, 255, 255, 0.05); color: #ccc; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            padding: 6px 16px; border-radius: 20px; 
+            font-size: 0.85rem; text-decoration: none; 
+            display: inline-flex; align-items: center; gap: 6px; 
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; transform: translateY(-1px); }
+        .nav-btn.primary { background: rgba(255, 193, 7, 0.1); color: #ffc107; border-color: rgba(255, 193, 7, 0.3); }
+        .nav-btn.primary:hover { background: rgba(255, 193, 7, 0.2); box-shadow: 0 0 15px rgba(255, 193, 7, 0.2); }
+
+        /* Content Layout */
+        .main-content { margin-top: 90px; padding-bottom: 50px; max-width: 1000px; margin-left: auto; margin-right: auto; }
+
+        /* --- Page Header Area --- */
+        .page-header-actions {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 25px;
+        }
+
+        /* --- Stage Group Card --- */
+        .stage-group-card {
+            background: #161616; border-radius: 12px; margin-bottom: 30px;
+            border: 1px solid #333; overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* Theme Colors */
+        .theme-stage { border-top: 4px solid #f1e3b6; }
+        .theme-stage .stage-header-text { color: #f1e3b6; text-shadow: 0 0 10px rgba(241, 227, 182, 0.2); }
+        .theme-stage .badge-type { background: rgba(241, 227, 182, 0.1); color: #f1e3b6; border: 1px solid #f1e3b6; }
+        .theme-stage .btn-add-sub { border-color: #f1e3b6; color: #f1e3b6; }
+        .theme-stage .btn-add-sub:hover { background: #f1e3b6; color: #000; }
+        
+        .theme-nightmare { border-top: 4px solid #d2ade6; }
+        .theme-nightmare .stage-header-text { color: #d2ade6; text-shadow: 0 0 10px rgba(210, 173, 230, 0.2); }
+        .theme-nightmare .badge-type { background: rgba(210, 173, 230, 0.1); color: #d2ade6; border: 1px solid #d2ade6; }
+        .theme-nightmare .btn-add-sub { border-color: #d2ade6; color: #d2ade6; }
+        .theme-nightmare .btn-add-sub:hover { background: #d2ade6; color: #000; }
+
+        /* Header */
+        .stage-header {
+            padding: 15px 25px; background: rgba(255,255,255,0.02);
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .stage-title { font-size: 1.5rem; font-weight: 800; margin: 0; letter-spacing: 1px; }
+
+        /* Team Row */
+        .team-row {
+            padding: 20px 25px; border-bottom: 1px solid #2a2a2a;
+            display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+            position: relative; transition: background 0.2s;
+        }
+        .team-row:hover { background: #1a1a1a; }
+        .team-row:last-child { border-bottom: none; }
+
+        /* Formation Mini Preview */
+        .formation-mini { width: 50px; text-align: center; flex-shrink: 0; opacity: 0.8; }
+        .formation-mini img { width: 30px; height: auto; display: block; margin: 0 auto; }
+        .formation-mini span { font-size: 0.7rem; color: #666; }
+
+        /* Hero Strip */
+        .hero-strip { display: flex; gap: 8px; flex-grow: 1; align-items: center; min-height: 60px; }
+        .hero-slot-sm {
+            width: 45px; aspect-ratio: 3/4; background: #000; border: 1px solid #333;
+            border-radius: 4px; overflow: hidden; position: relative; transition: all 0.3s ease;
+        }
+        .hero-slot-sm img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-slot-sm.is-front { border-color: #90caf9; transform: translateY(-10px); box-shadow: 0 5px 10px rgba(0,0,0,0.5); z-index: 2; }
+
+        .btn-del-team { color: #555; transition: 0.2s; background: none; border: none; }
+        .btn-del-team:hover { color: #dc3545; transform: scale(1.2); }
+
+        /* --- Modal Styles --- */
+        .modal-content { background: #1a1a1a; border: 1px solid #444; color: #fff; }
+        
+        /* Updated Input Styles */
+        .input-dark { 
+            background: #222; border: 1px solid #444; color: #fff; 
+            font-weight: 500; padding: 8px 12px;
+        }
+        .input-dark:focus { 
+            background: #2a2a2a; border-color: #ffc107; 
+            box-shadow: 0 0 8px rgba(255, 193, 7, 0.2); color: #fff;
+        }
+        .input-dark::placeholder { color: #666; }
+        
+        .modal-label {
+            color: #e0e0e0; font-size: 0.85rem; font-weight: 600;
+            margin-bottom: 6px; display: block;
+        }
+
+        /* Formation Radio Modern */
+        .formation-selector { display: flex; gap: 15px; justify-content: center; }
+        .form-option input { display: none; }
+        .form-option label {
+            display: block; padding: 10px; border: 2px solid #333; border-radius: 8px;
+            cursor: pointer; transition: all 0.2s; background: #111; text-align: center; min-width: 80px;
+        }
+        .form-option label img { width: 30px; margin-bottom: 5px; transition: all 0.2s; }
+        .form-option label div { font-size: 0.8rem; color: #888; font-weight: bold; }
+        
+        .form-option input:checked + label {
+            border-color: #ffc107; background: rgba(255, 193, 7, 0.1);
+        }
+        .form-option input:checked + label div { color: #ffc107; }
+
+        /* --- Hero Picker Slots --- */
+        .hero-select-container { 
+            display: flex; gap: 12px; justify-content: center; margin-top: 25px; 
+            height: 100px; align-items: center;
+        }
+        .hero-input-slot {
+            width: 65px; aspect-ratio: 3/4; background: #222;
+            border: 2px solid #444; 
+            border-radius: 8px; cursor: pointer; position: relative; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hero-input-slot:hover { border-color: #fff; }
+        .hero-input-slot img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+        
+        .hero-input-slot.slot-front {
+            border-color: #90caf9; transform: translateY(-15px);
+            box-shadow: 0 8px 15px rgba(144, 202, 249, 0.2);
+        }
+        .hero-input-slot.slot-front i { color: #90caf9 !important; }
+
+        .hero-input-slot.slot-back {
+            border-color: #ef9a9a; transform: translateY(0);
+        }
+        .hero-input-slot.slot-back i { color: #ef9a9a !important; }
+
+        /* Hero Picker Grid */
+        .hero-picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 8px; max-height: 350px; overflow-y: auto; }
+        .picker-item { cursor: pointer; border: 1px solid #333; aspect-ratio: 1; padding: 2px; border-radius: 4px; background: #000; }
+        .picker-item:hover { border-color: #ffc107; }
+        .picker-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    </style>
+</head>
+<body class="text-light">
+
+    <nav class="navbar-modern">
+        <div class="nav-brand-box">
+            <img src="/images/about_website/logo_seven_knight_rebirth.png" alt="Logo" class="site-logo">
+            <span class="nav-title">7K Rebirth <span style="font-weight:400; opacity:0.7;">| Stage Manager</span></span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/admin/dashboard" class="nav-btn primary">
+                <i class="bi bi-grid-fill"></i> Panel
+            </a>
+            <a href="/admin/logout" class="nav-btn">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        
+        <div class="page-header-actions">
+            <button class="btn btn-warning btn-sm fw-bold px-4 shadow-sm" onclick="openNewStageModal()">
+                <i class="bi bi-plus-lg me-2"></i>New Stage
+            </button>
+        </div>
+
+        <% stages.forEach(group => { %>
+            <div class="stage-group-card theme-<%= group.type.toLowerCase() %>">
+                
+                <div class="stage-header">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge-type rounded-pill px-3 py-1 fw-bold"><%= group.type %></span>
+                        <h2 class="stage-title stage-header-text">
+                            <%= group.stage_main %> - <%= group.stage_sub %>
+                        </h2>
+                    </div>
+                    <button class="btn btn-sm btn-outline-light btn-add-sub rounded-pill px-3" 
+                            onclick="openAddTeamModal('<%= group.type %>', '<%= group.stage_main %>', '<%= group.stage_sub %>')">
+                        <i class="bi bi-plus-lg me-1"></i> Add Team
+                    </button>
+                </div>
+
+                <% group.teams.forEach(team => { %>
+                    <div class="team-row">
+                        <div class="formation-mini">
+                            <img src="/images/formation/<%= team.formation %>.png">
+                            <span><%= team.formation %></span>
+                        </div>
+
+                        <div class="hero-strip">
+                            <% 
+                                let upIndices = [];
+                                if(team.formation === '1-4') upIndices = [2];
+                                else if(team.formation === '2-3') upIndices = [1, 3];
+                                else if(team.formation === '3-2') upIndices = [0, 2, 4];
+                                else if(team.formation === '4-1') upIndices = [0, 1, 3, 4];
+                            %>
+                            <% team.heroes.forEach((h, i) => { %>
+                                <div class="hero-slot-sm <%= upIndices.includes(i) ? 'is-front' : '' %>">
+                                    <% if(h) { %> <img src="/images/heroes/<%= h %>"> <% } %>
+                                </div>
+                            <% }) %>
+                        </div>
+
+                        <% if(team.description) { %>
+                            <div class="ms-3 me-auto border-start border-secondary ps-3" style="max-width: 300px;">
+                                <span class="text-light" style="font-size: 0.9rem;"><%= team.description %></span>
+                            </div>
+                        <% } else { %>
+                            <div class="me-auto"></div>
+                        <% } %>
+
+                        <button class="btn-del-team" onclick="deleteTeam(<%= team.id %>)" title="Delete Team">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </div>
+                <% }) %>
+
+            </div>
+        <% }) %>
+        
+        <% if(stages.length === 0) { %>
+            <div class="text-center py-5 text-white opacity-75">
+                <i class="bi bi-layers display-1"></i>
+                <p class="mt-3 fs-5">No stages created yet.</p>
+                <button class="btn btn-outline-light mt-2" onclick="openNewStageModal()">Create First Stage</button>
+            </div>
+        <% } %>
+
+    </div>
+
+    <div class="modal fade" id="compModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-secondary py-2">
+                    <h6 class="modal-title fw-bold text-warning">Team Configuration</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body pt-4">
+                    <form id="compForm">
+                        <input type="hidden" name="id" id="compId">
+                        
+                        <div class="row g-2 mb-4" id="stageInputsRow">
+                            <div class="col-4">
+                                <label class="modal-label">Main Stage</label>
+                                <input type="number" name="stage_main" id="stageMain" class="form-control form-control-sm input-dark text-center fw-bold" min="1" required>
+                            </div>
+                            <div class="col-4">
+                                <label class="modal-label">Sub Stage</label>
+                                <input type="number" name="stage_sub" id="stageSub" class="form-control form-control-sm input-dark text-center fw-bold" min="1" required>
+                            </div>
+                            <div class="col-4">
+                                <label class="modal-label">Type</label>
+                                <select name="type" id="stageType" class="form-select form-select-sm input-dark">
+                                    <option value="Stage">Stage</option>
+                                    <option value="Nightmare">Nightmare</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="modal-label text-center mb-2">Select Formation</label>
+                            <div class="formation-selector">
+                                <% ['1-4', '2-3', '3-2', '4-1'].forEach(fmt => { %>
+                                    <div class="form-option">
+                                        <input type="radio" name="formation" id="fmt_<%= fmt %>" value="<%= fmt %>" <%= fmt=='1-4'?'checked':'' %> onchange="updateHeroSlotsUI(this.value)">
+                                        <label for="fmt_<%= fmt %>">
+                                            <img src="/images/formation/<%= fmt %>.png">
+                                            <div><%= fmt %></div>
+                                        </label>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="modal-label text-center mb-0">Team Composition</label>
+                            <div class="hero-select-container">
+                                <% for(let i=0; i<5; i++) { %>
+                                    <div class="text-center">
+                                        <div class="hero-input-slot" id="heroSlotContainer_<%= i %>" onclick="openHeroPicker(<%= i %>)">
+                                            <img src="" id="heroPreview_<%= i %>" style="display: none;">
+                                            <i class="bi bi-plus-lg text-secondary" id="heroPlaceholder_<%= i %>"></i>
+                                        </div>
+                                        <input type="hidden" name="heroes[]" id="heroInput_<%= i %>">
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="modal-label">Note (Optional)</label>
+                            <input type="text" name="description" id="compDesc" class="form-control input-dark" placeholder="e.g. Needs high resistance...">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer border-secondary py-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success btn-sm px-4" onclick="saveComp()">Save Team</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="heroPickerModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header border-secondary py-2">
+                    <h6 class="modal-title">Select Hero</h6>
+                    <input type="text" id="heroSearch" class="form-control form-control-sm bg-dark text-light border-secondary ms-3" style="width: 200px;" placeholder="Search name...">
+                </div>
+                <div class="modal-body">
+                    <div class="hero-picker-grid" id="heroGrid">
+                        <% heroes.forEach(h => { %>
+                            <div class="picker-item" onclick="selectHero('<%= h.filename %>')" data-name="<%= h.name.toLowerCase() %>">
+                                <img src="/images/heroes/<%= h.filename %>" title="<%= h.name %>">
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../../partials/footer') %>
+
+    <script>
+        const compModal = new bootstrap.Modal(document.getElementById('compModal'));
+        const heroPickerModal = new bootstrap.Modal(document.getElementById('heroPickerModal'));
+        let currentSlot = 0;
+
+        function updateHeroSlotsUI(formation) {
+            let frontIndices = [];
+            switch(formation) {
+                case '1-4': frontIndices = [2]; break;
+                case '2-3': frontIndices = [1, 3]; break;
+                case '3-2': frontIndices = [0, 2, 4]; break;
+                case '4-1': frontIndices = [0, 1, 3, 4]; break;
+            }
+
+            for(let i=0; i<5; i++) {
+                const container = document.getElementById(`heroSlotContainer_${i}`);
+                const placeholder = document.getElementById(`heroPlaceholder_${i}`);
+                
+                container.classList.remove('slot-front', 'slot-back');
+                placeholder.classList.remove('text-secondary'); 
+
+                if(frontIndices.includes(i)) {
+                    container.classList.add('slot-front');
+                } else {
+                    container.classList.add('slot-back');
+                }
+            }
+        }
+
+        function openNewStageModal() {
+            resetForm();
+            enableStageInputs(true);
+            updateHeroSlotsUI(document.querySelector('input[name="formation"]:checked').value);
+            compModal.show();
+        }
+
+        function openAddTeamModal(type, main, sub) {
+            resetForm();
+            document.getElementById('stageType').value = type;
+            document.getElementById('stageMain').value = main;
+            document.getElementById('stageSub').value = sub;
+            enableStageInputs(false);
+            updateHeroSlotsUI(document.querySelector('input[name="formation"]:checked').value);
+            compModal.show();
+        }
+
+        function resetForm() {
+            document.getElementById('compForm').reset();
+            document.getElementById('compId').value = '';
+            document.getElementById('fmt_1-4').checked = true;
+            for(let i=0; i<5; i++) setHeroSlot(i, '');
+        }
+
+        function enableStageInputs(enable) {
+            const ids = ['stageMain', 'stageSub', 'stageType'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if(enable) {
+                    el.readOnly = false;
+                    el.style.opacity = '1';
+                    if(el.tagName === 'SELECT') el.disabled = false;
+                } else {
+                    el.readOnly = true;
+                    el.style.opacity = '0.5';
+                    if(el.tagName === 'SELECT') el.disabled = true;
+                }
+            });
+        }
+
+        function saveComp() {
+            if(!document.getElementById('stageMain').value || !document.getElementById('stageSub').value) {
+                return alert('Stage number is required!');
+            }
+
+            const form = document.getElementById('compForm');
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData);
+            
+            if(!payload.type) payload.type = document.getElementById('stageType').value;
+
+            payload.heroes = [];
+            for(let i=0; i<5; i++) {
+                payload.heroes.push(document.getElementById(`heroInput_${i}`).value);
+            }
+
+            fetch('/admin/api/save_stage_comp', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) location.reload();
+                else alert('Error: ' + data.error);
+            });
+        }
+
+        function deleteTeam(id) {
+            if(!confirm('Delete this team?')) return;
+            fetch('/admin/api/delete_stage_comp', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) location.reload();
+            });
+        }
+
+        function openHeroPicker(slotIndex) {
+            currentSlot = slotIndex;
+            heroPickerModal.show();
+        }
+        function selectHero(filename) {
+            setHeroSlot(currentSlot, filename);
+            heroPickerModal.hide();
+        }
+        function setHeroSlot(index, filename) {
+            const input = document.getElementById(`heroInput_${index}`);
+            const img = document.getElementById(`heroPreview_${index}`);
+            const ph = document.getElementById(`heroPlaceholder_${index}`);
+            
+            input.value = filename || '';
+            if(filename) {
+                img.src = `/images/heroes/${filename}`;
+                img.style.display = 'block';
+                ph.style.display = 'none';
+            } else {
+                img.style.display = 'none';
+                ph.style.display = 'block';
+            }
+        }
+
+        document.getElementById('heroSearch').addEventListener('keyup', function(e) {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.picker-item').forEach(item => {
+                item.style.display = item.dataset.name.includes(term) ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

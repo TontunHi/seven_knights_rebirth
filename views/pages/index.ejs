@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/css/pages/home.css">
+</head>
+<body class="d-flex flex-column h-100 bg-main text-light">
+
+    <%- include('../partials/navbar') %>
+
+    <main class="flex-shrink-0 mt-5 pt-4">
+        <div class="container py-5">
+            <div class="p-5 mb-4 rounded-3 bg-hero text-center">
+                <h1 class="display-4 fw-bold text-gradient">Seven Knight Rebirth</h1>
+                <p class="lead text-secondary">Database, Builds, Tier Lists, and Comprehensive Guides.</p>
+                <hr class="my-4 border-secondary">
+                <a class="btn btn-outline-warning btn-lg" href="#" role="button">Explore Tier List</a>
+            </div>
+
+            <div class="row align-items-md-stretch">
+                <div class="col-md-4 mb-3">
+                    <div class="h-100 p-4 text-white bg-card rounded-3 border-glow">
+                        <h3><i class="bi bi-hammer text-warning"></i> Best Builds</h3>
+                        <p>ค้นหาการจัดไอเทมและรูนที่เหมาะสมที่สุดสำหรับฮีโร่ทุกตัว</p>
+                        <a href="/build/legendary" class="btn btn-sm btn-light">View Builds</a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="h-100 p-4 text-white bg-card rounded-3 border-glow">
+                        <h3><i class="bi bi-trophy text-danger"></i> Tier List</h3>
+                        <p>อัปเดตอันดับตัวละครยอดนิยมทั้ง PVP และ PVE</p>
+                        <a href="/tierlist/pvp" class="btn btn-sm btn-light">Check Tiers</a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="h-100 p-4 text-white bg-card rounded-3 border-glow">
+                        <h3><i class="bi bi-people text-info"></i> Team Comp</h3>
+                        <p>จัดทีมผ่านด่าน Raid, Dungeon และ Guild War</p>
+                        <a href="/comp/stage" class="btn btn-sm btn-light">Find Comps</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/pages/home.js"></script>
+</body>
+</html>

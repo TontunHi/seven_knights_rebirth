@@ -1,0 +1,30 @@
+/* Dark Theme Variables */
+:root {
+    --bg-main: #121212;
+    --bg-card: #1e1e1e;
+    --bg-nav: #000000;
+    --text-primary: #e0e0e0;
+    --accent-color: #ffc107; /* สีทอง */
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Custom Navbar */
+.bg-dark-custom {
+    background-color: var(--bg-nav) !important;
+    border-bottom: 1px solid #333;
+}
+
+/* Dropdown Dark Mode Fix */
+.dropdown-menu-dark {
+    background-color: #2d2d2d;
+    border: 1px solid #444;
+}
+
+.dropdown-item:hover {
+    background-color: #3d3d3d;
+}

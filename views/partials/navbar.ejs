@@ -1,0 +1,179 @@
+<style>
+    /* --- Navbar Styles --- */
+    .navbar-modern {
+        background: rgba(10, 10, 10, 0.85); /* สีดำโปร่งแสง */
+        backdrop-filter: blur(12px); /* เบลอฉากหลัง */
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* เส้นขอบบางๆ */
+        padding: 0.8rem 0;
+        transition: all 0.3s ease;
+    }
+
+    /* Brand / Logo */
+    .navbar-brand-text {
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        background: linear-gradient(45deg, #fff, #ccc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+    }
+
+    /* Nav Links */
+    .nav-link-custom {
+        color: #b0b0b0 !important;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem !important;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .nav-link-custom:hover {
+        color: #fff !important;
+    }
+
+    /* Animated Underline Effect */
+    .nav-link-custom::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 5px;
+        left: 50%;
+        background-color: #ffc107; /* สีทอง */
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        transform: translateX(-50%);
+        box-shadow: 0 0 8px rgba(255, 193, 7, 0.6);
+    }
+
+    .nav-link-custom:hover::after {
+        width: 80%; /* ความยาวเส้นเมื่อ Hover */
+    }
+
+    /* Active State */
+    .nav-link-custom.active {
+        color: #ffc107 !important;
+        text-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+    }
+    .nav-link-custom.active::after {
+        width: 80%;
+    }
+
+    /* Dropdown Menu Animation */
+    .dropdown-menu-custom {
+        background-color: #1a1a1a;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 10px 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        margin-top: 15px !important; /* เว้นระยะห่างจาก Navbar นิดหน่อย */
+        
+        /* Animation */
+        animation: slideUpFade 0.3s ease forwards;
+        transform-origin: top center;
+    }
+
+    @keyframes slideUpFade {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Dropdown Items */
+    .dropdown-item-custom {
+        color: #ccc;
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+        border-left: 2px solid transparent;
+    }
+
+    .dropdown-item-custom:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #ffc107;
+        border-left-color: #ffc107;
+        padding-left: 25px; /* ขยับขวาเมื่อ Hover */
+    }
+    
+    .dropdown-divider { border-top-color: rgba(255,255,255,0.1); }
+
+    /* Mobile Toggler */
+    .navbar-toggler {
+        border: none;
+        padding: 0;
+    }
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-modern fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <img src="/images/about_website/logo_seven_knight_rebirth.png" alt="7K Rebirth" 
+                 style="height: 40px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(255,193,7,0.4));">
+            <span class="navbar-brand-text">7K Rebirth</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center gap-1">
+                
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>" href="/">
+                        Home
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-link-custom dropdown-toggle <%= typeof page !== 'undefined' && page === 'build' ? 'active' : '' %>" href="#" role="button" data-bs-toggle="dropdown">
+                        Builds
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-dark">
+                        <li><a class="dropdown-item dropdown-item-custom" href="/build/legendary">Legendary Heroes</a></li>
+                        <li><a class="dropdown-item dropdown-item-custom" href="/build/rare">Rare Heroes</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-link-custom dropdown-toggle <%= typeof page !== 'undefined' && page === 'tierlist' ? 'active' : '' %>" href="#" role="button" data-bs-toggle="dropdown">
+                        Tier List
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-dark">
+                        <li><a class="dropdown-item dropdown-item-custom" href="/tierlist/pvp">PVP Tier List</a></li>
+                        <li><a class="dropdown-item dropdown-item-custom" href="/tierlist/pve">PVE Tier List</a></li>
+                        <li><a class="dropdown-item dropdown-item-custom" href="/tierlist/pet">Pet Tier List</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-link-custom dropdown-toggle <%= typeof page !== 'undefined' && page === 'comp' ? 'active' : '' %>" href="#" role="button" data-bs-toggle="dropdown">
+                        Comp & Guide
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-dark">
+                        <li><a class="dropdown-item dropdown-item-custom" href="/comp/stage">Stage & Nightmare</a></li>
+                        
+                        <li><hr class="dropdown-divider"></li>
+                        
+                        <li><a class="dropdown-item dropdown-item-custom" href="/comp/raid">Raid</a></li>
+                        <li><a class="dropdown-item dropdown-item-custom" href="/comp/dungeon">Dungeon</a></li>
+                        <li><a class="dropdown-item dropdown-item-custom" href="/comp/castle-rush">Castle Rush</a></li>
+                        <li><a class="dropdown-item dropdown-item-custom" href="/comp/guild-war">Guild War</a></li>
+                        <li><a class="dropdown-item dropdown-item-custom" href="/comp/advent">Advent Expedition</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>

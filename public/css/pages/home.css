@@ -1,0 +1,31 @@
+/* Hero Section Background */
+.bg-hero {
+    background: linear-gradient(135deg, #1e1e1e 0%, #0d0d0d 100%);
+    border: 1px solid #333;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #ffc107, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Card Styling */
+.bg-card {
+    background-color: var(--bg-card);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bg-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+.border-glow {
+    border: 1px solid #333;
+}
+
+.border-glow:hover {
+    border-color: var(--accent-color);
+}

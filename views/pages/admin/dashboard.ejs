@@ -3,111 +3,130 @@
 <head>
     <%- include('../../partials/head') %>
     <style>
+        /* --- Global Theme --- */
         body { 
             background-color: #0f0f0f; 
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', sans-serif; 
+            color: #e0e0e0;
+            padding-top: 80px; /* เว้นที่ให้ Navbar */
         }
 
-        /* --- Modern Navbar --- */
+        /* --- Navbar (Modern Style) --- */
         .navbar-modern {
-            height: 64px; 
-            background: rgba(18, 18, 18, 0.95); 
+            height: 64px;
+            background: rgba(18, 18, 18, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            padding: 0 20px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1050;
+            padding: 0 20px;
             display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
-        
-        .nav-brand-box { display: flex; align-items: center; gap: 12px; }
-        .site-logo { height: 40px; width: auto; object-fit: contain; filter: drop-shadow(0 0 5px rgba(255,193,7,0.3)); }
-        .nav-title { font-weight: 700; color: #fff; font-size: 1.1rem; letter-spacing: 0.5px; }
-        
-        .nav-btn { 
-            background: rgba(255, 255, 255, 0.05); color: #ccc; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            padding: 6px 16px; border-radius: 20px; 
-            font-size: 0.85rem; text-decoration: none; 
-            display: inline-flex; align-items: center; gap: 6px; 
-            transition: all 0.2s;
+        .nav-brand-text { font-weight: 700; letter-spacing: 0.5px; font-size: 1.1rem; color: #fff; }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05); color: #ccc;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.85rem;
+            transition: all 0.2s; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 6px;
         }
-        .nav-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; transform: translateY(-1px); }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
 
-        /* --- Dashboard Cards --- */
-        .dashboard-container {
-            margin-top: 100px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-bottom: 50px;
-        }
-
-        .dash-card {
-            background: #1e1e1e;
+        /* --- Welcome Section --- */
+        .welcome-banner {
+            background: linear-gradient(45deg, #1e1e1e, #161616);
             border: 1px solid #333;
             border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .welcome-text h2 { color: #fff; font-weight: 700; margin-bottom: 5px; }
+        .welcome-text p { color: #888; margin: 0; }
+        .date-badge {
+            background: #000; color: #ffc107; 
+            padding: 5px 15px; border-radius: 20px; 
+            border: 1px solid #333; font-size: 0.9rem; font-weight: bold;
+        }
+
+        /* --- Dashboard Grid --- */
+        .dash-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
             height: 100%;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         .dash-card:hover {
             transform: translateY(-5px);
-            border-color: #555;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-color: #ffc107;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
         
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            background: -webkit-linear-gradient(#ffc107, #ff8c00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Icon ตกแต่ง */
+        .card-icon-bg {
+            position: absolute;
+            top: -10px; right: -10px;
+            font-size: 5rem;
+            opacity: 0.05;
+            transform: rotate(15deg);
+            transition: 0.3s;
+        }
+        .dash-card:hover .card-icon-bg {
+            opacity: 0.1;
+            transform: rotate(0deg) scale(1.1);
         }
 
-        .card-body { padding: 30px; text-align: center; }
-        .card-title { color: #fff; font-weight: 700; margin-bottom: 10px; }
-        .card-desc { color: #888; font-size: 0.9rem; margin-bottom: 25px; min-height: 40px; }
-
+        .card-title { font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .card-desc { color: #888; font-size: 0.9rem; margin-bottom: 20px; flex-grow: 1; }
+        
+        /* Buttons in Card */
         .btn-action {
-            display: block; width: 100%;
-            padding: 10px; margin-bottom: 8px;
-            border-radius: 8px; font-weight: 600; font-size: 0.9rem;
-            text-decoration: none; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            padding: 10px; border-radius: 8px; text-decoration: none;
+            font-weight: 600; transition: 0.2s; font-size: 0.9rem;
+            margin-bottom: 8px;
         }
         
-        .btn-outline-gold { border: 1px solid #ffc107; color: #ffc107; }
-        .btn-outline-gold:hover { background: #ffc107; color: #000; }
-        
-        .btn-outline-white { border: 1px solid #444; color: #ccc; }
-        .btn-outline-white:hover { background: #333; color: #fff; border-color: #666; }
+        /* Color Variants */
+        .btn-gold { background: rgba(255, 193, 7, 0.1); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.3); }
+        .btn-gold:hover { background: #ffc107; color: #000; }
 
-        /* Stage Theme */
-        .btn-outline-purple { border: 1px solid #d2ade6; color: #d2ade6; }
-        .btn-outline-purple:hover { background: #d2ade6; color: #000; }
+        .btn-cyan { background: rgba(13, 202, 240, 0.1); color: #0dcaf0; border: 1px solid rgba(13, 202, 240, 0.3); }
+        .btn-cyan:hover { background: #0dcaf0; color: #000; }
 
-        /* Dungeon Theme */
-        .btn-outline-red { border: 1px solid #ff6b6b; color: #ff6b6b; }
-        .btn-outline-red:hover { background: #ff6b6b; color: #000; }
+        .btn-purple { background: rgba(111, 66, 193, 0.1); color: #d63384; border: 1px solid rgba(111, 66, 193, 0.3); }
+        .btn-purple:hover { background: #d63384; color: #fff; }
 
-        /* [NEW] Codex Theme (Cyan / Sky Blue) */
-        .btn-outline-cyan { border: 1px solid #0dcaf0; color: #0dcaf0; }
-        .btn-outline-cyan:hover { background: #0dcaf0; color: #000; box-shadow: 0 0 10px rgba(13, 202, 240, 0.4); }
-        .btn-outline-brown { border: 1px solid #947769; color: #947769; }
-        .btn-outline-brown:hover { background: #947769; color: #000; }
+        .btn-green { background: rgba(25, 135, 84, 0.1); color: #198754; border: 1px solid rgba(25, 135, 84, 0.3); }
+        .btn-green:hover { background: #198754; color: #fff; }
+
+        .section-header {
+            border-left: 4px solid #ffc107;
+            padding-left: 15px;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        .section-header h4 { margin: 0; color: #fff; font-weight: bold; }
     </style>
 </head>
 <body class="text-light">
-    
+
     <nav class="navbar-modern">
-        <div class="nav-brand-box">
-            <img src="/images/about_website/logo_seven_knights_rebirth.png" alt="Logo" class="site-logo">
-            <span class="nav-title">Admin Dashboard</span>
+        <div class="d-flex align-items-center gap-3">
+            <img src="/images/about_website/logo_seven_knights_rebirth.png" alt="Logo" style="height: 40px;">
+            <span class="nav-brand-text">7K Rebirth <span style="font-weight:400; opacity:0.7;">| Admin Panel</span></span>
         </div>
         <div class="d-flex align-items-center gap-3">
-            <a href="/" target="_blank" class="nav-btn">
-                <i class="bi bi-globe"></i> View Website
+            <a href="/" class="nav-btn" target="_blank">
+                <i class="bi bi-globe"></i> Visit Site
             </a>
             <a href="/admin/logout" class="nav-btn">
                 <i class="bi bi-box-arrow-right"></i> Logout
@@ -115,88 +134,120 @@
         </div>
     </nav>
 
-    <div class="container dashboard-container">
+    <div class="container py-4" style="max-width: 1200px;">
+        
+        <div class="welcome-banner">
+            <div class="welcome-text">
+                <h2>Welcome back, Admin!</h2>
+                <p>Manage your game database, tier lists, and guides from one place.</p>
+            </div>
+            <div class="date-badge">
+                <i class="bi bi-calendar3 me-2"></i> <%= new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h4><i class="bi bi-database-fill me-2 text-warning"></i> Database Management</h4>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-lg-4">
+                <div class="dash-card">
+                    <i class="bi bi-journal-bookmark-fill card-icon-bg"></i>
+                    <div class="card-title">
+                        <i class="bi bi-book-half text-info" style="font-size: 1.5rem;"></i> Codex System
+                    </div>
+                    <p class="card-desc">Manage the core database of Heroes and Pets. Add new characters, skills, and images.</p>
+                    
+                    <a href="/admin/codex/hero" class="btn-action btn-cyan">
+                        <i class="bi bi-person-badge-fill me-2"></i> Hero Codex
+                    </a>
+                    <a href="/admin/codex/pet" class="btn-action btn-green">
+                        <i class="bi bi-android2 me-2"></i> Pet Codex
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="dash-card">
+                    <i class="bi bi-tools card-icon-bg"></i>
+                    <div class="card-title">
+                        <i class="bi bi-hammer text-warning" style="font-size: 1.5rem;"></i> Build Manager
+                    </div>
+                    <p class="card-desc">Create and update recommended equipment builds for Heroes (PVE/PVP).</p>
+                    
+                    <a href="/admin/manage/build/legendary" class="btn-action btn-gold">
+                        <i class="bi bi-star-fill me-2"></i> Legendary Builds
+                    </a>
+                    <a href="/admin/manage/build/rare" class="btn-action btn-gold" style="filter: grayscale(0.3);">
+                        <i class="bi bi-gem me-2"></i> Rare Builds
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="dash-card">
+                    <i class="bi bi-trophy-fill card-icon-bg"></i>
+                    <div class="card-title">
+                        <i class="bi bi-list-ol text-danger" style="font-size: 1.5rem;"></i> Tier List
+                    </div>
+                    <p class="card-desc">Update hero rankings for different game modes. Drag and drop to reorder.</p>
+                    
+                    <a href="/admin/manage/tierlist" class="btn-action btn-purple" style="background: rgba(220, 53, 69, 0.1); color: #dc3545; border-color: rgba(220, 53, 69, 0.3);">
+                        <i class="bi bi-bar-chart-fill me-2"></i> Manage Tiers
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h4><i class="bi bi-journal-richtext me-2 text-warning"></i> Guides & Strategy</h4>
+        </div>
+
         <div class="row g-4">
-            
             <div class="col-md-4">
                 <div class="dash-card">
-                    <div class="card-body">
-                        <i class="bi bi-hammer card-icon"></i>
-                        <h4 class="card-title">Build Manager</h4>
-                        <p class="card-desc">Manage hero equipment builds, stats, and accessories.</p>
-                        
-                        <a href="/admin/manage/build/legendary" class="btn-action btn-outline-gold">
-                            Legendary Heroes
-                        </a>
-                        <a href="/admin/manage/build/rare" class="btn-action btn-outline-white">
-                            Rare Heroes
-                        </a>
+                    <i class="bi bi-flag-fill card-icon-bg"></i>
+                    <div class="card-title text-white">
+                        <i class="bi bi-map-fill text-primary"></i> Stage Comp
                     </div>
+                    <p class="card-desc">Setup team compositions for adventure stages.</p>
+                    <a href="/admin/manage/comp/stage" class="btn-action btn-cyan" style="background: rgba(13, 110, 253, 0.1); color: #0d6efd; border-color: rgba(13, 110, 253, 0.3);">
+                        <i class="bi bi-arrow-right-circle me-2"></i> Manage Stages
+                    </a>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="dash-card">
-                    <div class="card-body">
-                        <i class="bi bi-trophy-fill card-icon"></i>
-                        <h4 class="card-title">Tier List</h4>
-                        <p class="card-desc">Update rankings for PVP, PVE, and Pets with drag & drop.</p>
-                        
-                        <a href="/admin/manage/tierlist?category=PVP" class="btn-action btn-outline-gold">
-                            Manage Tier List
-                        </a>
+                    <i class="bi bi-exclude card-icon-bg"></i>
+                    <div class="card-title text-white">
+                        <i class="bi bi-grid-3x3-gap-fill text-danger"></i> Dungeon Comp
                     </div>
+                    <p class="card-desc">Guides for Gold, EXP, and material dungeons.</p>
+                    <a href="/admin/manage/comp/dungeon" class="btn-action btn-cyan" style="background: rgba(220, 53, 69, 0.1); color: #dc3545; border-color: rgba(220, 53, 69, 0.3);">
+                        <i class="bi bi-arrow-right-circle me-2"></i> Manage Dungeons
+                    </a>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="dash-card">
-                    <div class="card-body">
-                        <i class="bi bi-map-fill card-icon" style="-webkit-text-fill-color: #d2ade6;"></i>
-                        <h4 class="card-title">Comp & Guide</h4>
-                        <p class="card-desc">Manage formations for Stages, Dungeons, and Raids.</p>
-                        
-                        <a href="/admin/manage/comp/stage" class="btn-action btn-outline-purple">
-                            <i class="bi bi-flag-fill me-2"></i>Stage & Nightmare
-                        </a>
-
-                        <a href="/admin/manage/comp/dungeon" class="btn-action btn-outline-red">
-                            <i class="bi bi-shield-shaded me-2"></i>Dungeon
-                        </a>
-                        
-                        <button class="btn-action btn-outline-white opacity-50" disabled>
-                            Raid (Coming Soon)
-                        </button>
-                        
-                        <a href="/admin/manage/comp/guild-war" class="btn-action btn-outline-white">
-                            <i class="bi bi-shield-fill me-2"></i>Guild War
-                        </a>
+                    <i class="bi bi-shield-shaded card-icon-bg"></i>
+                    <div class="card-title text-white">
+                        <i class="bi bi-shield-fill text-warning"></i> Guild War
                     </div>
+                    <p class="card-desc">Strategy and team setups for Guild Wars.</p>
+                    <a href="/admin/manage/comp/guild-war" class="btn-action btn-cyan" style="background: rgba(255, 193, 7, 0.1); color: #ffc107; border-color: rgba(255, 193, 7, 0.3);">
+                        <i class="bi bi-arrow-right-circle me-2"></i> Manage GW
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <div class="col-md-4">
-                <div class="dash-card">
-                    <div class="card-body">
-                        <i class="bi bi-book-fill card-icon" style="-webkit-text-fill-color: #0dcaf0;"></i>
-                        <h4 class="card-title">Codex System</h4>
-                        <p class="card-desc">Manage Heroes and Pets database.</p>
-                        
-                        <a href="/admin/codex/hero" class="btn-action btn-outline-cyan mb-2">
-                            <i class="bi bi-person-fill me-2"></i>Hero Codex
-                        </a>
-
-                        <a href="/admin/codex/pet" class="btn-action btn-outline-success" style="border: 1px solid #198754; color: #198754;">
-                            <i class="fas fa-paw me-2"></i>Pet Codex
-                        </a>
-                        
-                        <style>
-                            .btn-outline-success:hover { background-color: #198754; color: #fff; }
-                        </style>
-                    </div>
-                </div>
-            </div>
+    </div>
 
     <%- include('../../partials/footer') %>
+
 </body>
 </html>
